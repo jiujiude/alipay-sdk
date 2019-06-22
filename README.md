@@ -1,6 +1,7 @@
-﻿﻿# jiujiude/alipay-sdk
-支付宝SDK全功能反射服务类
-利用支付宝官方SDK分装服务类，理论上包含了官方SDK的所有功能，支持服务商模式
+﻿### jiujiude/alipay-sdk
+
+* 支付宝SDK全功能反射服务类
+* 利用支付宝官方SDK封装的服务类，理论上包含了官方SDK的所有功能，支持服务商模式
 
 [支付宝官方文档](https://docs.open.alipay.com/api)
 
@@ -34,9 +35,9 @@
     var_dump($result);
 
 #### 说明
-1.请假支付宝包的配置添加到config中
+1.请将支付宝包的配置添加到config.php中
 
-2.进行编码引用autoload.php
+2.引用vendor/autoload.php
 
 3.new \Alipay($config)，传入配置参数
 
