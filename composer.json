@@ -1,0 +1,18 @@
+{
+  "name": "jiujiude/alipay-sdk",
+  "description": "支付宝SDK全功能反射服务类",
+  "authors": [
+    {
+      "name": "jiujiude",
+      "email": "393210556@qq.com"
+    }
+  ],
+  "autoload": {
+    "classmap": [
+      "src/alipay"
+    ],
+    "files": [
+      "src/alipay/function.php"
+    ]
+  }
+}
