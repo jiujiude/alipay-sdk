@@ -138,6 +138,7 @@ final class Alipay {
 		$responseNode = str_replace(".", "_", $this->api_method) . "_response";
 		/*
 		 * 这里可能带来不兼容问题,使用过程中发现支付宝返回的数据格式有可能不统一
+		 * 官方校验全部采用的code = 10000为正确，但部分接口并非如此，所以有了如下处理
 		 * 当前发现了几种可能：
 		 * 1、response Key 存在，且有code，且是 10000 ，正常
 		 * 2、response Key 存在，但没有code,有sub_msg，错误
