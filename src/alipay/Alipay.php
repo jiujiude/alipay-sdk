@@ -136,14 +136,35 @@ final class Alipay {
 		$result = json_encode($result);
 		$result = json_decode($result, true);
 		$responseNode = str_replace(".", "_", $this->api_method) . "_response";
-		if (!empty($result[$responseNode]['code']) && $result[$responseNode]['code'] == 10000) {
-			return $result[$responseNode];
-		} else {
-			if (!empty($result['error_response'])) {
-				$this->setMsg($result['error_response']['sub_msg']);
+		/*
+		 * 这里可能带来不兼容问题,使用过程中发现支付宝返回的数据格式有可能不统一
+		 * 当前发现了几种可能：
+		 * 1、response Key 存在，且有code，且是 10000 ，正常
+		 * 2、response Key 存在，但没有code,有sub_msg，错误
+		 * 3、response Key 存在，但没有code,或无sub_msg 正常
+		 * 4、response Key 存在，且有code，不是10000，错误
+		 * 5、response Key 不存在，error_response存在 错误
+		 * 6、其他可能性
+		 * By hgq <393210556@qq.com> 2019/06/28 下午 18:42
+		 */
+		if (isset($result[$responseNode])) {
+			if (isset($result[$responseNode]['code']) && $result[$responseNode]['code'] == 10000) {
+				return $result[$responseNode];
+			} elseif(!isset($result[$responseNode]['code'])) {
+				if(isset($result[$responseNode]['sub_msg'])) {
+					$this->setMsg($result[$responseNode]['sub_msg']);
+					return false;
+				}
+				return $result[$responseNode];
+			}else {
+				$this->setMsg($result[$responseNode]['sub_msg']);
 				return false;
 			}
-			$this->setMsg($result[$responseNode]['msg']);
+		} elseif(isset($result['error_response'])) {
+			$this->setMsg($result['error_response']['sub_msg']);
+			return false;
+		} else {
+			$this->setMsg('支付宝系统故障或非法请求');
 			return false;
 		}
 	}
